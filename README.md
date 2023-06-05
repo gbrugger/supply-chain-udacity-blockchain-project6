@@ -1,5 +1,11 @@
 # Supply chain & data auditing
 
+## Libraries
+
+The Roles library is used to avoid code duplication, since inheritance in Solidity is implemented by copying code to each child contract.
+
+Also, gas cost will be lower when each of the *Roles contracts is deployed, because they'll be smaller.
+
 This repository containts an Ethereum DApp that demonstrates a Supply Chain flow between a Seller and Buyer. The user story is similar to any commonly used supply chain process. A Seller can add items to the inventory system stored in the blockchain. A Buyer can purchase such items from the inventory system. Additionally a Seller can mark an item as Shipped, and similarly a Buyer can mark an item as Received.
 
 The DApp User Interface when running should look like...
