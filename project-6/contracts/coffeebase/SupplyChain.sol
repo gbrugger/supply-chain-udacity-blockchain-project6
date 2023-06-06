@@ -1,7 +1,19 @@
 pragma solidity ^0.4.24;
 
+import {ConsumerRole} from "../coffeeaccesscontrol/ConsumerRole.sol";
+import {DistributorRole} from "../coffeeaccesscontrol/DistributorRole.sol";
+import {FarmerRole} from "../coffeeaccesscontrol/FarmerRole.sol";
+import {RetailerRole} from "../coffeeaccesscontrol/RetailerRole.sol";
+import {Ownable} from "../coffeecore/Ownable.sol";
+
 // Define a contract 'Supplychain'
-contract SupplyChain {
+contract SupplyChain is
+    Ownable,
+    ConsumerRole,
+    DistributorRole,
+    FarmerRole,
+    RetailerRole
+{
     // Define 'owner'
     address owner;
 
@@ -95,36 +107,43 @@ contract SupplyChain {
 
     // Define a modifier that checks if an item.state of a upc is Processed
     modifier processed(uint _upc) {
+        require(items[_upc].itemState == State.Processed);
         _;
     }
 
     // Define a modifier that checks if an item.state of a upc is Packed
     modifier packed(uint _upc) {
+        require(items[_upc].itemState == State.Packed);
         _;
     }
 
     // Define a modifier that checks if an item.state of a upc is ForSale
     modifier forSale(uint _upc) {
+        require(items[_upc].itemState == State.ForSale);
         _;
     }
 
     // Define a modifier that checks if an item.state of a upc is Sold
     modifier sold(uint _upc) {
+        require(items[_upc].itemState == State.Sold);
         _;
     }
 
     // Define a modifier that checks if an item.state of a upc is Shipped
     modifier shipped(uint _upc) {
+        require(items[_upc].itemState == State.Shipped);
         _;
     }
 
     // Define a modifier that checks if an item.state of a upc is Received
     modifier received(uint _upc) {
+        require(items[_upc].itemState == State.Received);
         _;
     }
 
     // Define a modifier that checks if an item.state of a upc is Purchased
     modifier purchased(uint _upc) {
+        require(items[_upc].itemState == State.Purchased);
         _;
     }
 
@@ -153,12 +172,24 @@ contract SupplyChain {
         string _originFarmLatitude,
         string _originFarmLongitude,
         string _productNotes
-    ) public {
+    ) public onlyFarmer {
         // Add the new item as part of Harvest
+        items[_upc].sku = sku;
+        items[_upc].upc = _upc;
+        items[_upc].originFarmerID = _originFarmerID;
+        items[_upc].originFarmName = _originFarmName;
+        items[_upc].originFarmInformation = _originFarmInformation;
+        items[_upc].originFarmLatitude = _originFarmLatitude;
+        items[_upc].originFarmLongitude = _originFarmLongitude;
+        items[_upc].productNotes = _productNotes;
+        items[_upc].ownerID = msg.sender;
+        items[_upc].productID = _upc + sku;
+        items[_upc].itemState = State.Harvested;
 
         // Increment sku
         sku = sku + 1;
         // Emit the appropriate event
+        emit Harvested(_upc);
     }
 
     // Define a function 'processtItem' that allows a farmer to mark an item 'Processed'
