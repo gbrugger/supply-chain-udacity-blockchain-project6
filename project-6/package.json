@@ -1,5 +1,5 @@
 {
-  "name": "supply-chain-E",
+  "name": "supply-chain",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,10 +11,14 @@
   "author": "pk <pkrasam@gmail.com> (https://ipfs.infura.io/ipfs/QmSXiR9Khm3yo1J67nUopvVBxFJ8YGN2fUGZ34Etr3m92x/)",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^8.42.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.27.5",
     "lite-server": "2.4.0"
   },
   "dependencies": {
     "ganache-cli": "^6.12.2",
-    "truffle": "^4.1.14"
+    "truffle": "^4.1.14",
+    "web3": "^1.10.0"
   }
 }
