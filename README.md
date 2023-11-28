@@ -21,9 +21,11 @@
 ## Requirement 2: Project write-up - Libraries
 
 ```
-Truffle v. 4.1.14
-Node.js v. 14.21.3
-web3 v. 1.10.0
+Truffle v.4.1.14
+Node.js v.14.21.3
+web3 v.1.10.0
+dotenv v.16.3.1
+truffle-hdwallet-provider v.1.0.2
 ```
 
 The Roles library is used to avoid code duplication, since inheritance in Solidity is implemented by copying code to each child contract.
@@ -47,6 +49,16 @@ The DApp User Interface when running should look like...
 ## Requirement 3: Project write-up - IPFS
 
 IPFS is not used in this project.
+
+## Part 4: Deploy smart contracts on public test network
+
+### Transaction hash 
+
+
+### Contract hash
+
+
+### Contract address
 
 ## Getting Started
 
