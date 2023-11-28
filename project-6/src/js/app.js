@@ -4,7 +4,7 @@ App = {
   emptyAddress: "0x0000000000000000000000000000000000000000",
   sku: 0,
   upc: 0,
-  metamaskAccountID: "0x0000000000000000000000000000000000000000",
+  walletAccountID: "0x0000000000000000000000000000000000000000",
   ownerID: "0x0000000000000000000000000000000000000000",
   originFarmerID: "0x0000000000000000000000000000000000000000",
   originFarmName: null,
@@ -39,6 +39,7 @@ App = {
     App.consumerID = $("#consumerID").val();
 
     console.log(
+      "[App.readFrom]",
       App.sku,
       App.upc,
       App.ownerID,
@@ -79,12 +80,12 @@ App = {
       );
     }
 
-    App.getMetaskAccountID();
+    App.getWalletAccountID();
 
     return App.initSupplyChain();
   },
 
-  getMetaskAccountID: function () {
+  getWalletAccountID: function () {
     web3 = new Web3(App.web3Provider);
 
     // Retrieving accounts
@@ -93,8 +94,8 @@ App = {
         console.log("Error:", err);
         return;
       }
-      console.log("getMetaskID:", res);
-      App.metamaskAccountID = res[0];
+      console.log("getWalletAccountID:", res);
+      App.walletAccountID = res[0];
     });
   },
 
@@ -108,6 +109,9 @@ App = {
       var SupplyChainArtifact = data;
       App.contracts.SupplyChain = TruffleContract(SupplyChainArtifact);
       App.contracts.SupplyChain.setProvider(App.web3Provider);
+
+      //TODO: Forcing the owner's account. This is bad. https://knowledge.udacity.com/questions/529545
+      web3.eth.defaultAccount = web3.eth.accounts[0];
 
       App.fetchItemBufferOne();
       App.fetchItemBufferTwo();
@@ -124,7 +128,7 @@ App = {
   handleButtonClick: async function (event) {
     event.preventDefault();
 
-    App.getMetaskAccountID();
+    App.getWalletAccountID();
 
     var processId = parseInt($(event.target).data("id"));
     console.log("processId", processId);
@@ -171,13 +175,13 @@ App = {
       .then(function (instance) {
         return instance.harvestItem(
           App.upc,
-          App.metamaskAccountID,
+          App.walletAccountID,
           App.originFarmName,
           App.originFarmInformation,
           App.originFarmLatitude,
           App.originFarmLongitude,
           App.productNotes,
-          { from: $("#originFarmerID").val() }
+          { from: App.walletAccountID, gasPrice: web3.toWei("1", "gwei") }
         );
       })
       .then(function (result) {
@@ -195,7 +199,7 @@ App = {
 
     App.contracts.SupplyChain.deployed()
       .then(function (instance) {
-        return instance.processItem(App.upc, { from: App.metamaskAccountID });
+        return instance.processItem(App.upc, { from: App.walletAccountID });
       })
       .then(function (result) {
         $("#ftc-item").text(result);
@@ -212,7 +216,7 @@ App = {
 
     App.contracts.SupplyChain.deployed()
       .then(function (instance) {
-        return instance.packItem(App.upc, { from: App.metamaskAccountID });
+        return instance.packItem(App.upc, { from: App.walletAccountID });
       })
       .then(function (result) {
         $("#ftc-item").text(result);
@@ -232,7 +236,7 @@ App = {
         const productPrice = web3.utils.toWei("1000000", "gwei");
         console.log("productPrice", productPrice);
         return instance.sellItem(App.upc, App.productPrice, {
-          from: App.metamaskAccountID,
+          from: App.walletAccountID,
         });
       })
       .then(function (result) {
@@ -252,7 +256,7 @@ App = {
       .then(function (instance) {
         const walletValue = web3.utils.toWei("2000000", "gwei");
         return instance.buyItem(App.upc, {
-          from: App.metamaskAccountID,
+          from: App.walletAccountID,
           value: walletValue,
         });
       })
@@ -271,7 +275,7 @@ App = {
 
     App.contracts.SupplyChain.deployed()
       .then(function (instance) {
-        return instance.shipItem(App.upc, { from: App.metamaskAccountID });
+        return instance.shipItem(App.upc, { from: App.walletAccountID });
       })
       .then(function (result) {
         $("#ftc-item").text(result);
@@ -288,7 +292,7 @@ App = {
 
     App.contracts.SupplyChain.deployed()
       .then(function (instance) {
-        return instance.receiveItem(App.upc, { from: App.metamaskAccountID });
+        return instance.receiveItem(App.upc, { from: App.walletAccountID });
       })
       .then(function (result) {
         $("#ftc-item").text(result);
@@ -305,7 +309,7 @@ App = {
 
     App.contracts.SupplyChain.deployed()
       .then(function (instance) {
-        return instance.purchaseItem(App.upc, { from: App.metamaskAccountID });
+        return instance.purchaseItem(App.upc, { from: App.walletAccountID });
       })
       .then(function (result) {
         $("#ftc-item").text(result);

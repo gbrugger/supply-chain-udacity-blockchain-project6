@@ -22,7 +22,8 @@
 
 ```
 Truffle v.4.1.14
-Node.js v.14.21.3
+Ganache-CLI v.6.12.2
+Node.js v.18.16.0
 web3 v.1.10.0
 dotenv v.16.3.1
 truffle-hdwallet-provider v.1.0.2
@@ -52,13 +53,13 @@ IPFS is not used in this project.
 
 ## Part 4: Deploy smart contracts on public test network
 
-### Transaction hash 
+### Transaction hash
 
-
-### Contract hash
-
+[0x11f116991cb8917ebd4d06b6954518b62f37af2e3c6033a44e1f4b86fba4cd6f](https://sepolia.etherscan.io/tx/0x11f116991cb8917ebd4d06b6954518b62f37af2e3c6033a44e1f4b86fba4cd6f)
 
 ### Contract address
+
+[0x63f91EeE7668E3E0db3744EE4Aa4Ab741f9c73B5](https://sepolia.etherscan.io/address/0x63f91eee7668e3e0db3744ee4aa4ab741f9c73b5)
 
 ## Getting Started
 
